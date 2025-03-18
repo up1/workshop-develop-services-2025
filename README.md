@@ -4,7 +4,7 @@
   * Go + [Echo framework](https://github.com/labstack/echo)
   * Database :: MySQL
 
-## Step 1 :: Design REST API with [OpenAPI/Swagger](https://swagger.io/)
+## Step 1 :: Design and Develop REST API with [OpenAPI/Swagger](https://swagger.io/)
 * Design or API First
 * Generate code from OpenAPI Specification
 
@@ -30,4 +30,25 @@ $go run cmd/main.go
 Testing APIs
 ```
 $curl http://localhost:8080/items | jq
+```
+
+## Step 2 :: Generate OpenAPI Documentation
+* [Redoc](https://github.com/Redocly/redoc)
+* [Reference](https://github.com/up1/workshop-api-first/tree/main/workshop/swagger)
+
+```
+$npx @redocly/cli build-docs ./openapi/openapi.yaml
+
+// Open file
+* redoc-static.html
+```
+
+Use [redocly cli](https://redocly.com/docs/cli)
+```
+$npm i -g @redocly/cli 
+$redocly lint ./openapi/openapi.yaml
+$redocly build-docs ./openapi/openapi.yaml
+
+// Open file
+* redoc-static.html
 ```
