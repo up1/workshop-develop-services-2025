@@ -21,3 +21,13 @@ $go mod init api
 $oapi-codegen --config=../openapi/config.yaml ../openapi/openapi.yaml
 $go mod tidy
 ```
+
+Run service
+```
+$go run cmd/main.go
+```
+
+Testing APIs
+```
+$curl http://localhost:8080/items | jq
+```
