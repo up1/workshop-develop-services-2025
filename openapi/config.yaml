@@ -1,0 +1,5 @@
+package: api
+output: items.gen.go
+generate:
+  models: true
+  echo-server: true
