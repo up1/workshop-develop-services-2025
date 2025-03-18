@@ -119,6 +119,7 @@ $go test ./... -cover -v
 ## Step 4 :: Registering the API service with Backstage
 * [Backstage](https://backstage.io/)
   * NodeJs 20
+* [Reference](https://backstage.io/docs/features/software-catalog/descriptor-format)
 
 Install Backstage
 ```
