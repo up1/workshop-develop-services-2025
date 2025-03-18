@@ -115,3 +115,87 @@ Run test
 $go mod tidy
 $go test ./... -cover -v
 ```
+
+## Step 4 :: Registering the API service with Backstage
+* [Backstage](https://backstage.io/)
+  * NodeJs 20
+
+Install Backstage
+```
+$npx @backstage/create-app@latest
+$cd demo
+$yarn install
+$yarn dev
+```
+
+Config file `app-config.yaml`
+```
+baseUrl: http://localhost:7007
+reading:
+    allow:
+        - host: '*.githubusercontent.com'
+```
+
+Config API/Service/System in file `entities.yaml`
+```
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: demo-system
+  description: "Demo system for workshop"
+spec:
+  owner: team-a
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: items-service
+  description: "Go Echo service for Items API"
+spec:
+  type: service
+  owner: team-a
+  system: demo-system
+  lifecycle: production
+  providesApis: [items-api]
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: items-api
+  description: "The Items service API"
+spec:
+  type: openapi
+  lifecycle: production
+  owner: team-a
+  system: demo-system
+  definition:
+    $text: https://raw.githubusercontent.com/up1/workshop-develop-services-2025/main/openapi/openapi.yaml
+```
+
+Config User/Group in file `org.yaml`
+```
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: user01
+spec:
+  memberOf: [team-a]
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: team-a
+spec:
+  type: team
+  children: []
+```
+
+Start server again
+```
+$yarn dev
+```
+
+Access to server
+* http://localhost:3000

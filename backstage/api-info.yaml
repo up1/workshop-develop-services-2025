@@ -1,0 +1,53 @@
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: user01
+spec:
+  memberOf: [team-a]
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: team-a
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: demo-system
+  description: "Demo system for workshop"
+spec:
+  owner: team-a
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: items-service
+  description: "Go Echo service for Items API"
+  annotations:
+    backstage.io/source-location: "url:https://github.com/up1/workshop-develop-services-2025"
+spec:
+  type: service
+  owner: team-a
+  system: demo-system
+  lifecycle: production
+  providesApis: [items-api]
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: items-api
+  description: "The Items service API"
+  annotations:
+    backstage.io/source-location: "url:https://github.com/up1/workshop-develop-services-2025"
+spec:
+  type: openapi
+  lifecycle: production
+  owner: team-a
+  system: demo-system
+  definition:
+    $text: https://raw.githubusercontent.com/up1/workshop-develop-services-2025/main/openapi/openapi.yaml
