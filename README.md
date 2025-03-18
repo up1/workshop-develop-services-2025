@@ -7,6 +7,7 @@
 ## Step 1 :: Design and Develop REST API with [OpenAPI/Swagger](https://swagger.io/)
 * Design or API First
 * Generate code from OpenAPI Specification
+* [Swagger Editor](https://editor.swagger.io/)
 
 Use [OAPI-CodeGen](https://github.com/oapi-codegen/oapi-codegen)
 ```
