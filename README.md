@@ -66,7 +66,8 @@ $redocly build-docs ./openapi/openapi.yaml
 ```
 $cd postman
 
-
+$npm install -g newman
+$newman run item-service.postman_collection.json
 ```
 
 ### Step 3.2 :: Internal testing
