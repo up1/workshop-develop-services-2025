@@ -13,6 +13,10 @@ func main() {
 
 	e := echo.New()
 
+	e.GET("/health", func(c echo.Context) error {
+		return c.String(200, "OK")
+	})
+
 	api.RegisterHandlers(e, &server)
 
 	// And we serve HTTP until the world ends.

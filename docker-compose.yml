@@ -12,7 +12,7 @@ services:
       - DATABASE_USERNAME=root
       - DATABASE_PASSWORD=root
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      test: ["CMD", "wget", "--spider", "http://localhost:8080/health"]
       interval: 3s
       timeout: 3s
       retries: 5
