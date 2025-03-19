@@ -9,7 +9,19 @@ import (
 )
 
 func main() {
-	server := api.NewServer()
+	// Connect to the mysql database
+	db, err := api.ConnectDB()
+	if err != nil {
+		log.Fatal("Failed to connect to the database:", err)
+	}
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.Fatal("Failed to close the database connection:", err)
+		}
+	}()
+
+	// Create server
+	server := api.NewServer(db)
 
 	e := echo.New()
 

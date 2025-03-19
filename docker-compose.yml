@@ -16,3 +16,22 @@ services:
       interval: 3s
       timeout: 3s
       retries: 5
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:9
+    volumes:
+      - ./db/tables.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./db/data.sql:/docker-entrypoint-initdb.d/2.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: itemdb
+      MYSQL_USER: user01
+      MYSQL_PASSWORD: password01
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
