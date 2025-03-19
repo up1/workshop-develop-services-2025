@@ -200,3 +200,13 @@ $yarn dev
 
 Access to server
 * http://localhost:3000
+
+## Step 5 :: Building software with Docker
+```
+$docker compose build item-service
+$docker compose up -d item-service
+$docker compose ps
+```
+
+Testing again !!
+* http://localhost:8080/items
