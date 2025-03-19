@@ -43,6 +43,17 @@ func main() {
 		}
 	}()
 
+	// Initialize the meter provider
+	shutdownMeterProvider, err := api.InitMeterProvider(ctx, conn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := shutdownMeterProvider(ctx); err != nil {
+			log.Fatalf("failed to shutdown MeterProvider: %s", err)
+		}
+	}()
+
 	// Connect to the mysql database
 	db, err := api.ConnectDB()
 	if err != nil {
@@ -58,6 +69,7 @@ func main() {
 	server := api.NewServer(db)
 
 	e := echo.New()
+	// Middleware for OpenTelemetry
 	e.Use(otelecho.Middleware("item-service"))
 
 	e.GET("/health", func(c echo.Context) error {

@@ -2,10 +2,13 @@ package api
 
 import (
 	"database/sql"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/metric"
 )
 
 // ensure that we've conformed to the `ServerInterface` with a compile-time check
@@ -25,6 +28,18 @@ func (s *Server) GetItems(ctx echo.Context) error {
 	tracer := otel.GetTracerProvider()
 	_ctx, span := tracer.Tracer("demo").Start(ctx.Request().Context(), "get-items-from-db")
 	defer span.End()
+
+	// Meter the request
+	meter := otel.Meter("demo")
+	commonAttrs := []attribute.KeyValue{
+		attribute.String("key1", "value1"),
+		attribute.String("key2", "value2"),
+	}
+	runCount, err := meter.Int64Counter("get_items_count", metric.WithDescription("The number of times the iteration ran"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	runCount.Add(ctx.Request().Context(), 1, metric.WithAttributes(commonAttrs...))
 
 	// Query the database for items
 	rows, err := s.DB.QueryContext(_ctx, "SELECT id, name FROM items")

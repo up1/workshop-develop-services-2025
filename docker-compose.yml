@@ -49,3 +49,12 @@ services:
     image: jaegertracing/all-in-one:1.67.0
     ports:
       - "16686:16686"
+
+  prometheus:
+    image: prom/prometheus:v3.2.0
+    volumes:
+      - ./config/prometheus.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    depends_on:
+      - otel-collector

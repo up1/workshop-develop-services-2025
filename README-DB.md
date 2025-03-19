@@ -55,3 +55,26 @@ Testing again !!
 Access to Jaeger
 * http://localhost:16686
 
+## Step 5 :: Add metrics in item service
+* [Prometheus](https://prometheus.io/)
+
+```
+$docker compose up -d prometheus
+$docker compose ps
+```
+
+Build item service
+```
+$docker compose build item-service
+$docker compose up -d item-service
+$docker compose ps
+```
+
+Testing again !!
+* http://localhost:8080/items
+
+Access to Prometheus
+* http://localhost:9090/
+  * Search metric name = get_items_count_total
+
+
