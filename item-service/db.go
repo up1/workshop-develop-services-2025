@@ -2,10 +2,13 @@ package api
 
 import (
 	"database/sql"
+	"log"
 	"os"
 	"time"
 
+	"github.com/XSAM/otelsql"
 	_ "github.com/go-sql-driver/mysql"
+	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 )
 
 func ConnectDB() (*sql.DB, error) {
@@ -14,10 +17,20 @@ func ConnectDB() (*sql.DB, error) {
 	password := os.Getenv("DATABASE_PASSWORD")
 	host := os.Getenv("DATABASE_HOST")
 	database := os.Getenv("DATABASE_NAME")
-	// Connect to the MySQL database
-	db, err := sql.Open("mysql", username+":"+password+"@tcp("+host+":3306)/"+database)
+
+	// Connect to the MySQL database and tracing
+	db, err := otelsql.Open("mysql", username+":"+password+"@tcp("+host+":3306)/"+database,
+		otelsql.WithAttributes(semconv.DBSystemMySQL))
 	if err != nil {
 		return nil, err
+	}
+
+	// Register DB stats to meter
+	err = otelsql.RegisterDBStatsMetrics(db, otelsql.WithAttributes(
+		semconv.DBSystemMySQL,
+	))
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	db.SetMaxOpenConns(25)

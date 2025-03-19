@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"go.opentelemetry.io/otel"
 )
 
 // ensure that we've conformed to the `ServerInterface` with a compile-time check
@@ -20,8 +21,13 @@ func NewServer(db *sql.DB) Server {
 
 // GetItems implements ServerInterface.
 func (s *Server) GetItems(ctx echo.Context) error {
+	// Trace the request
+	tracer := otel.GetTracerProvider()
+	_ctx, span := tracer.Tracer("demo").Start(ctx.Request().Context(), "get-items-from-db")
+	defer span.End()
+
 	// Query the database for items
-	rows, err := s.DB.Query("SELECT id, name FROM items")
+	rows, err := s.DB.QueryContext(_ctx, "SELECT id, name FROM items")
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to query items"})
 	}
