@@ -15,8 +15,11 @@ exporters:
     endpoint: 0.0.0.0:9090
   debug:
     verbosity: detailed
-  otlphttp:
-    endpoint: http://loki:3100/loki/api/v1/push
+  otlphttp/logs:
+    endpoint: http://loki:3100/otlp
+    # http://loki:3100/loki/api/v1/push
+    tls:
+      insecure: true
     
 
 processors:
@@ -42,4 +45,4 @@ service:
     logs:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlphttp]
+      exporters: [otlphttp/logs]
