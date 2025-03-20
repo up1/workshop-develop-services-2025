@@ -3,12 +3,14 @@ package main
 import (
 	"context"
 	"log"
+	"log/slog"
 	"os"
 	"os/signal"
 
 	"api"
 
 	"github.com/labstack/echo/v4"
+	slogotel "github.com/remychantenay/slog-otel"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 	"go.opentelemetry.io/otel/sdk/resource"
 )
@@ -54,6 +56,17 @@ func main() {
 		}
 	}()
 
+	// Initialize the log provider
+	shutdownLogProvider, err := api.InitLogProvider(ctx, conn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := shutdownLogProvider(ctx); err != nil {
+			log.Fatalf("failed to shutdown LogProvider: %s", err)
+		}
+	}()
+
 	// Connect to the mysql database
 	db, err := api.ConnectDB()
 	if err != nil {
@@ -65,6 +78,13 @@ func main() {
 		}
 	}()
 
+	// Configure slog with OpenTelemetry handler
+	slog.SetDefault(slog.New(slogotel.OtelHandler{
+		Next: slog.NewJSONHandler(os.Stdout, nil),
+	}))
+	logger := slog.Default()
+	logger = logger.With("service", "item-service")
+
 	// Create server
 	server := api.NewServer(db)
 
@@ -73,6 +93,7 @@ func main() {
 	e.Use(otelecho.Middleware("item-service"))
 
 	e.GET("/health", func(c echo.Context) error {
+		logger.InfoContext(c.Request().Context(), "/health endpoint called", "locale", "th_TH")
 		return c.String(200, "OK")
 	})
 

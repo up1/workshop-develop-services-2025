@@ -3,7 +3,7 @@
 FROM golang:1.24.1-alpine3.21 AS builder
 WORKDIR /build
 COPY go.mod go.sum ./
-RUN go mod tidy
+RUN --mount=type=cache,target=/go/pkg go mod download && go mod verify
 COPY . .
 RUN go build -o /app ./cmd/main.go
 

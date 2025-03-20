@@ -15,6 +15,9 @@ exporters:
     endpoint: 0.0.0.0:9090
   debug:
     verbosity: detailed
+  otlphttp:
+    endpoint: http://loki:3100/loki/api/v1/push
+    
 
 processors:
   batch:
@@ -35,3 +38,8 @@ service:
       receivers: [otlp]
       processors: [memory_limiter, batch]
       exporters: [prometheus]
+
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlphttp, debug]

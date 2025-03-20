@@ -78,3 +78,29 @@ Access to Prometheus
   * Search metric name = get_items_count_total
 
 
+## Step 6 :: Add logging in item service
+* [log/slog](https://pkg.go.dev/log/slog)
+* [slog/otel](https://github.com/remychantenay/slog-otel)
+* [Loki](https://grafana.com/oss/loki/)
+* [Grafana](https://grafana.com/)
+
+Start Loki and Grafana
+```
+$docker compose up -d loki
+$docker compose up -d grafana
+$docker compose ps
+```
+
+Build item service again
+```
+$docker compose build item-service
+$docker compose up -d item-service
+$docker compose ps
+```
+
+Testing again !!
+* http://localhost:8080/health
+* http://localhost:8080/items
+
+Access to Grafana
+* http://localhost:3000
