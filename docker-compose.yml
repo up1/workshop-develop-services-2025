@@ -11,6 +11,9 @@ services:
       - DATABASE_NAME=itemdb
       - DATABASE_USERNAME=root
       - DATABASE_PASSWORD=root
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+      - OTEL_EXPORTER_OTLP_INSECURE=true
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=item-service
     healthcheck:
       test: ["CMD", "wget", "--spider", "http://localhost:8080/health"]
       interval: 3s

@@ -8,6 +8,7 @@ require (
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/remychantenay/slog-otel v1.3.3
 	github.com/stretchr/testify v1.10.0
+	go.opentelemetry.io/contrib/bridges/otelslog v0.10.0
 	go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho v0.60.0
 	go.opentelemetry.io/otel v1.35.0
 	go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc v0.11.0

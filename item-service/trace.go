@@ -91,21 +91,12 @@ func InitMeterProvider(ctx context.Context, conn *grpc.ClientConn) (func(context
 
 // Initializes an OTLP exporter, and configures the corresponding log provider.
 func InitLogProvider(ctx context.Context, conn *grpc.ClientConn) (func(context.Context) error, error) {
-	res, err := resource.New(ctx,
-		resource.WithAttributes(
-			ServiceName,
-		),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create resource: %w", err)
-	}
 	logExporter, err := otlploggrpc.New(ctx, otlploggrpc.WithGRPCConn(conn))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create log exporter: %w", err)
 	}
 	logProvider := sdklog.NewLoggerProvider(
 		sdklog.WithProcessor(sdklog.NewBatchProcessor(logExporter)),
-		sdklog.WithResource(res),
 	)
 	return logProvider.Shutdown, nil
 }
