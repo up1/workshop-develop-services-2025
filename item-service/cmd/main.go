@@ -9,6 +9,7 @@ import (
 
 	"api"
 
+	"github.com/labstack/echo-contrib/echoprometheus"
 	"github.com/labstack/echo/v4"
 	slogotel "github.com/remychantenay/slog-otel"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
@@ -91,6 +92,9 @@ func main() {
 	e := echo.New()
 	// Middleware for OpenTelemetry
 	e.Use(otelecho.Middleware("item-service"))
+
+	e.Use(echoprometheus.NewMiddleware("myapp")) // adds middleware to gather metrics
+	e.GET("/metrics", echoprometheus.NewHandler())
 
 	e.GET("/health", func(c echo.Context) error {
 		logger.InfoContext(c.Request().Context(), "/health endpoint called", "locale", "th_TH")
