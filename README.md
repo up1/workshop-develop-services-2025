@@ -193,6 +193,16 @@ spec:
   children: []
 ```
 
+Edit file `app-config.yaml`
+* Allow to read data from external domain
+```
+backend:
+  baseUrl: http://localhost:7007
+  reading:
+    allow:
+      - host: '*.githubusercontent.com'
+```
+
 Start server again
 ```
 $yarn dev
