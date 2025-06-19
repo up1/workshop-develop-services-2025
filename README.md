@@ -205,7 +205,7 @@ backend:
 
 Start server again
 ```
-$yarn dev
+$yarn start
 ```
 
 Access to server
