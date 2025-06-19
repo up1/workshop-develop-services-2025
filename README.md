@@ -126,7 +126,7 @@ Install Backstage
 $npx @backstage/create-app@latest
 $cd demo
 $yarn install
-$yarn dev
+$yarn start
 ```
 
 Config file `app-config.yaml`
