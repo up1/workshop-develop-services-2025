@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "1c178dec-e99f-47f1-a8b6-0b1421dc3d92",
+		"name": "tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "1453931",
+		"_collection_link": "https://red-firefly-245852.postman.co/workspace/msa202509~e9f829cb-396c-4b90-b61e-59ae9bcb3bad/collection/1453931-1c178dec-e99f-47f1-a8b6-0b1421dc3d92?action=share&source=collection_link&creator=1453931"
+	},
+	"item": [
+		{
+			"name": "Get user by id with success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"",
+							"pm.test(\"Response matches JSON schema\", function () {",
+							"    const schema = {",
+							"        type: \"object\",",
+							"        properties: {",
+							"            id: { type: \"integer\" },",
+							"            fname: { type: \"string\" },",
+							"            lname: { type: \"string\" }",
+							"        },",
+							"        required: [\"id\", \"fname\", \"lname\"]",
+							"    };",
+							"",
+							"    const validate = require('ajv')().compile(schema);",
+							"    const valid = validate(response);",
+							"    ",
+							"    pm.expect(valid, validate.errors).to.be.true;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://cac6ccc8-73dd-48d5-9875-81c72eaa949a.mock.pstmn.io/users/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id with 404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(\"User id=2 not found\").to.eql(jsonData.message);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"",
+							"pm.test(\"Response matches JSON schema\", function () {",
+							"    const schema = {",
+							"        type: \"object\",",
+							"        properties: {",
+							"            message: { type: \"string\" }",
+							"        },",
+							"        required: [\"message\"]",
+							"    };",
+							"",
+							"    const validate = require('ajv')().compile(schema);",
+							"    const valid = validate(response);",
+							"    ",
+							"    pm.expect(valid, validate.errors).to.be.true;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://cac6ccc8-73dd-48d5-9875-81c72eaa949a.mock.pstmn.io/users/2"
+			},
+			"response": []
+		}
+	]
+}
