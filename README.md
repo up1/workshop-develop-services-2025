@@ -1,5 +1,9 @@
 # Workshop :: Develop services
 * REST APIs
+* Documentations
+  * Service catalog with [Backstage](https://backstage.io/)
+  * [Swagger or OpenAPI](https://swagger.io/)
+    * Design-first vs Code-first  
 * Technology stack
   * Go + [Echo framework](https://github.com/labstack/echo)
   * Database :: MySQL
