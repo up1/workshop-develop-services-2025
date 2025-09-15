@@ -141,7 +141,7 @@ reading:
         - host: '*.githubusercontent.com'
 ```
 
-Config API/Service/System in file `entities.yaml`
+Config API/Service/System in file `examples/entities.yaml`
 ```
 apiVersion: backstage.io/v1alpha1
 kind: System
