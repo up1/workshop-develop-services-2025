@@ -133,12 +133,14 @@ $yarn install
 $yarn start
 ```
 
-Config file `app-config.yaml`
+Edit file `app-config.yaml`
+* Allow to read data from external domain
 ```
-baseUrl: http://localhost:7007
-reading:
+backend:
+  baseUrl: http://localhost:7007
+  reading:
     allow:
-        - host: '*.githubusercontent.com'
+      - host: '*.githubusercontent.com'
 ```
 
 Config API/Service/System in file `examples/entities.yaml`
@@ -177,7 +179,7 @@ spec:
     $text: https://raw.githubusercontent.com/up1/workshop-develop-services-2025/main/openapi/openapi.yaml
 ```
 
-Config User/Group in file `org.yaml`
+Config User/Group in file `examples/org.yaml`
 ```
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
 apiVersion: backstage.io/v1alpha1
@@ -195,16 +197,6 @@ metadata:
 spec:
   type: team
   children: []
-```
-
-Edit file `app-config.yaml`
-* Allow to read data from external domain
-```
-backend:
-  baseUrl: http://localhost:7007
-  reading:
-    allow:
-      - host: '*.githubusercontent.com'
 ```
 
 Start server again
